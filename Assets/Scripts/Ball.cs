@@ -1,10 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using System.Collections.Specialized;
 using UnityEngine;
 
 public class Ball : MonoBehaviour
 {
+    int count = 0;
+    float timer = 0;
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -24,6 +28,30 @@ public class Ball : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
+    }
+
+    // Collision detection for bouncing ball
+    void OnCollisionEnter2D(Collision2D col)
+    {
+        count++;
+        Debug.Log("Bang " + count);
+
+        // Task 1: Stop playing the game when balls collide 20 times
+        if (count == 20) 
+        {
+            Debug.Log("Game ending after 20 collisions!");
+            
+            // Task 2: Destroy the ball object and print message
+            Debug.Log("Ball object destroyed after 20 collisions");
+            Destroy(gameObject);
+            
+            // Stop the game in Unity Editor
+            #if UNITY_EDITOR
+                UnityEditor.EditorApplication.isPlaying = false;
+            #else
+                Application.Quit();
+            #endif
+        }
     }
 }
